@@ -16,6 +16,7 @@ indexapp.controller('indexControl', function ($scope, $http) {
     $scope.lines = [];
     $scope.errorVocap = [];
     $scope.ajaxCount = 0;
+    $scope.isHasDraff = (localStorage["daffData"] === undefined || localStorage["daffData"] === "" )? false : true;
 
 
     if (fixw === undefined) {
@@ -102,7 +103,7 @@ indexapp.controller('indexControl', function ($scope, $http) {
             __tempData[_DATA] = res;
 
         }).error(function (data, status, headers, config) {
-            alert("error" + status);
+            alert("error connection" + status);
             $scope.lines[_mi]["translate"][_i] = "(" + "Error..." + ")";
         });
     };
@@ -144,18 +145,6 @@ indexapp.controller('indexControl', function ($scope, $http) {
             res = "Err..";
         }
 
-//         find in user Vocap
-        if (res === "Err.." || res.trim() === "") {
-            var userVocaps = $scope.userVocap;
-            for (var _i in userVocaps) {
-                if (_DATA === userVocaps[_i].vocap) {
-                    res = userVocaps[_i].res;
-                    console.log("user Vocap ", res);
-                    break;
-                }
-            }
-        }
-        
 //        save error
         if (res === "Err.." || res.trim() === "") {
             $scope.errorVocap.push({
@@ -171,8 +160,11 @@ indexapp.controller('indexControl', function ($scope, $http) {
 
 
     $scope.draff = function () {
+        if(!confirm("ยืนยันการบันทึก ?")) return ;
+        
         localStorage["daffData"] = JSON.stringify($scope.lines);
-        alert("draff OK");
+        
+        console.log("save");
     };
 
     $scope.loadDraff = function () {

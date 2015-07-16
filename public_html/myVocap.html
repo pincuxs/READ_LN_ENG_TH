@@ -26,10 +26,7 @@ and open the template in the editor.
                     <div class="mdl-layout-spacer"></div>
                     <!-- Navigation. We hide it in small screens. -->
                     <nav class="mdl-navigation mdl-layout--large-screen-only">
-                        <a class="mdl-navigation__link" href="index.html">Back</a>
-                        <!--                        <a class="mdl-navigation__link" href="">Link</a>
-                                                <a class="mdl-navigation__link" href="">Link</a>
-                                                <a class="mdl-navigation__link" href="">Link</a>-->
+                         <a href="index.html" style="color: white;" ><i class="material-icons">clear</i> </a>
                     </nav>
                 </div>
             </header>
@@ -97,7 +94,7 @@ and open the template in the editor.
                             <th>ลบ</th>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in userVocap">
+                                <tr ng-repeat="item in userVocap track by $index">
                                     <td> {{$index}}</td>
                                     <td>{{item.vocap}}</td>
                                     <td>{{item.res}}</td>
