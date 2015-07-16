@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="configapp">
+    <head>
+        <title>Config</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="MDL/material.min.css">
+        <script src="MDL/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="angular/angular.min.js"></script>
+        <script src="app-js/config-action.js"></script>
+    </head>
+    <body ng-controller="configControl">
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">Title</span>
+                    <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>
+                    <!-- Navigation. We hide it in small screens. -->
+                    <nav class="mdl-navigation">
+                        <a class="mdl-navigation__link" href="index.html">back</a>
+                    </nav>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">NO</span>
+                <nav class="mdl-navigation">
+                    <!--                    <a class="mdl-navigation__link" href="">Link</a>
+                                        <a class="mdl-navigation__link" href="">Link</a>
+                                        <a class="mdl-navigation__link" href="">Link</a>
+                                        <a class="mdl-navigation__link" href="">Link</a>-->
+                </nav>
+            </div>
+            <main class="mdl-layout__content">
+                <div class="page-content" style="padding: 20px;"><!-- Your content goes here -->
+
+
+                    <!-- Simple Textfield -->
+                    <form action="#">
+                        <div class="mdl-textfield mdl-js-textfield textfield-demo">
+                            <input class="mdl-textfield__input" type="text" id="sample1" ng-model="txtAdd" />
+                            <label class="mdl-textfield__label" for="sample1">คำเฉพาะ</label>
+                        </div>
+
+
+                        <!-- Colored raised button -->
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+                                ng-click="add()">
+                            เพิ่ม
+                        </button>
+
+                    </form>
+
+                    <table class="mdl-data-table mdl-js-data-table">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">คำเฉพาะ</th>
+                                <th class="mdl-data-table__cell--non-numeric">ลบ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="w in fixWord track by $index">
+                                <td class="mdl-data-table__cell--non-numeric">{{w}}</td>
+                                <td>
+                                    <!-- Icon button -->
+                                    <button class="mdl-button mdl-js-button mdl-button--icon" ng-click="del($index)">
+                                        <i class="material-icons">clear</i>
+                                    </button>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                       <!--{{fixWord}}-->
+
+                </div>
+            </main>
+        </div>
+
+    </body>
+</html>

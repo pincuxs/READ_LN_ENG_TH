@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="indexapp">
+    <head>
+        <title>HOME</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="MDL/material.min.css">
+        <script src="MDL/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="angular/angular.min.js"></script>
+        <script src="app-js/index-action.js"></script>
+    </head>
+    <body ng-controller="indexControl">
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">ENG ► THAI ☺ POWER BY ARM DEV</span>
+                    <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>
+                    <!-- Navigation. We hide it in small screens. -->
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <a class="mdl-navigation__link" href="">บันทึก</a>
+                        <a class="mdl-navigation__link" href="">คำเฉพาะ</a>
+                    </nav>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">เมนู</span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="index.html">เริ่มใหม่</a>
+                    <a class="mdl-navigation__link" href="config.html">คำเฉพาะ</a>
+                </nav>
+            </div>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <!-- Your content goes here -->
+
+                    <!--INPUT TEXT-->
+                    <!-- Floating Multiline Textfield -->
+                    <section style="margin: 20px; text-align: center;" ng-show="showInput">
+                        <div class="mdl-textfield mdl-js-textfield textfield-demo" style="width: 100%">
+                            <textarea class="mdl-textfield__input" type="text" rows= "20" id="sample5" ng-model="textareaData"></textarea>
+                            <label class="mdl-textfield__label" for="sample5">ใส่ ENG Light Novel ตรงนี้</label>
+                        </div>
+
+                        <!-- Colored raised button -->
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" ng-click="translate()">
+                            แปลงข้อความ
+                        </button>
+
+                    </section>
+
+                    <div align="center" ng-show="!showInput">
+                    <table style="border: 1px solid graytext">
+                        <tbody>
+                            <tr  ng-repeat="arrayinLine in lines track by $index">
+                                <td>{{mainindex=$index}} -</td>
+                                <td class="mdl-data-table__cell--non-numeric" style="border-bottom: 1px solid #ccccff;min-height:40px;">
+                                    <!-- Flat button with ripple -->
+                                    
+                                    <button style="text-transform:none;" class="mdl-button mdl-js-button mdl-js-ripple-effect" ng-repeat="myworld in arrayinLine.words track by $index"
+                                            ng-click="sendTranslate(mainindex,$index,myworld)">
+                                        <strong ng-if="checkFixWord(myworld)"> {{myworld}} </strong>
+                                        <span ng-if="!checkFixWord(myworld)"> {{myworld}} {{arrayinLine.translate[$index]}}</span>
+                                    </button>
+
+                                    <!--<span  ng-repeat="myworld in arrayinLine.words track by $index" >{{myworld}}</span>-->
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+
+    </body>
+</html>

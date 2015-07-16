@@ -1,0 +1,1 @@
+nw C:\Users\ARM\Documents\NetBeansProjects\baka-tsuki-to-thai-translate.google\public_html
