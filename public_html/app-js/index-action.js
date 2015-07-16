@@ -6,32 +6,36 @@
 
 var indexapp = angular.module('indexapp', []);
 
-indexapp.config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.defaults.useXDomain = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    }
-]);
-
 indexapp.controller('indexControl', function ($scope, $http) {
     console.log("indexControl");
     var fixw = localStorage["fixWord"];
-    if (fixw === undefined) {
-        fixw = localStorage["fixWord"] = JSON.stringify([]);
-    }
+    var userVocap = localStorage["userVocap"];
     $scope.fixWord = JSON.parse(fixw);
     $scope.showInput = true;
     var __tempData = {};
+    $scope.lines = [];
+    $scope.errorVocap = [];
+    $scope.ajaxCount = 0;
 
 
+    if (fixw === undefined) {
+        fixw = localStorage["fixWord"] = JSON.stringify([]);
+    }
+    if (userVocap !== undefined) {
+        $scope.userVocap = JSON.parse(userVocap);
+    } else {
+        $scope.userVocap = [];
+    }
 
     $scope.translate = function () {
+        $scope.showInput = false;
+
         console.log($scope.textareaData);
         var txt = $scope.textareaData;
         if (txt === undefined)
             return;
         var spText = txt.split("\n");
-        var length = spText.length;
-        console.log(length);
+
         $scope.lines = [];
         for (var _i in spText) {
 
@@ -39,12 +43,20 @@ indexapp.controller('indexControl', function ($scope, $http) {
             wordProcess(line);
         }
 
-        $scope.showInput = false;
+
     };
+
     function wordProcess(line) {
         var word = line.split(" ");
-        $scope.lines.push({words: word , translate : []});
-        console.log(word);
+        if (word.length > 2) {
+            if (word[1].indexOf(":") > 0) {
+                console.log("find people", word[0], word[1]);
+                word[0] = word[0] + " " + word[1];
+                word.splice(1, 1);
+            }
+        }
+        $scope.lines.push({words: word, translate: []});
+//        console.log(word);
     }
 
     $scope.sendTranslate = function (_mi, _i, _v) {
@@ -53,28 +65,48 @@ indexapp.controller('indexControl', function ($scope, $http) {
         var _HOST = "http://dict.longdo.com//mobile.php?search=";
         var _DATA = _v.replace(".", "").replace("\"", "").replace(",", "").replace("?", "");
 
+//find in temp
         if (__tempData[_DATA] !== undefined) {
             var res = __tempData[_DATA];
-//            $scope.lines[_mi]["translate"][_i] = "(" + res + ")";
-            console.log(_v, "cache data");
+            console.log("1. cache data : ", _DATA, res);
             return;
         }
 
+//find in user Vocap
+        var userVocaps = $scope.userVocap;
+        for (var _ii in userVocaps) {
+            if (_DATA === userVocaps[_ii].vocap) {
+                var res = userVocaps[_ii].res;
+                console.log("2. UserVocap : ", _DATA, res);
+                $scope.lines[_mi]["translate"][_i] = "(" + res + ")";
+                return;
+            }
+        }
+
+
+//find online
         var req = {
             method: 'GET',
             url: _HOST + _DATA
         };
-        $http(req).success(function (data, status, headers, config) {
-            var res = htmlPull(data, _DATA);
 
-            console.log(res, status);
+        $scope.lines[_mi]["translate"][_i] = "(" + "load..." + ")";
+        //ajax count
+        ++$scope.ajaxCount;
+
+        $http(req).success(function (data, status, headers, config) {
+
+            var res = htmlPull(data, _DATA);
             $scope.lines[_mi]["translate"][_i] = "(" + res + ")";
+            console.log("3. online : ", _DATA, res);
             __tempData[_DATA] = res;
 
         }).error(function (data, status, headers, config) {
             alert("error" + status);
+            $scope.lines[_mi]["translate"][_i] = "(" + "Error..." + ")";
         });
     };
+
     $scope.checkFixWord = function (_word) {
         for (var i = 0; i < $scope.fixWord.length; i++) {
 
@@ -90,19 +122,15 @@ indexapp.controller('indexControl', function ($scope, $http) {
         $scope.textareaData = "";
     };
 
-    function htmlPull(_html, _word) {
-//        var regex = new RegExp('\\b' + _word + '\\b');
+    function htmlPull(_html, _DATA) {
         var key = "NECTEC Lexitron Dictionary EN-TH";
         var _s = _html.indexOf(key);
         var _e = _html.indexOf("</tr>", _s);
         var res = _html.substring(_s, _e);
-//        console.log(_s, _e, res);
-
         //2
         _s = res.indexOf("</A>");
         _e = res.indexOf("</b>", _s);
         res = res.substring(_s + 12, (_e === -1) ? res.length : _e);
-//        console.log(_s, _e, res);
 
         // junk word
         var jword = ["<b>See also:", "<b>Syn.", "</td>", "<b>Ant.", ">"];
@@ -110,9 +138,53 @@ indexapp.controller('indexControl', function ($scope, $http) {
             res = res.replace(jword[_i], "");
         }
 
-//        console.log(res);
+//        error data
+        if (res.length > 50) {
+            console.log(res);
+            res = "Err..";
+        }
+
+//         find in user Vocap
+        if (res === "Err.." || res.trim() === "") {
+            var userVocaps = $scope.userVocap;
+            for (var _i in userVocaps) {
+                if (_DATA === userVocaps[_i].vocap) {
+                    res = userVocaps[_i].res;
+                    console.log("user Vocap ", res);
+                    break;
+                }
+            }
+        }
+        
+//        save error
+        if (res === "Err.." || res.trim() === "") {
+            $scope.errorVocap.push({
+                vocap: _DATA,
+                'res': res
+            });
+
+            saveErrorVocap();
+        }
+
         return res;
     }
+
+
+    $scope.draff = function () {
+        localStorage["daffData"] = JSON.stringify($scope.lines);
+        alert("draff OK");
+    };
+
+    $scope.loadDraff = function () {
+        var data = localStorage["daffData"];
+        $scope.lines = JSON.parse(data);
+        $scope.showInput = false;
+    };
+
+    function saveErrorVocap() {
+        localStorage["errorVocap"] = JSON.stringify($scope.errorVocap);
+    }
+
 });
 
 

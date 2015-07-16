@@ -21,7 +21,7 @@ and open the template in the editor.
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row">
                     <!-- Title -->
-                    <span class="mdl-layout-title">เมนู</span>
+                    <span class="mdl-layout-title">ตังค่า คำเฉพาะ</span>
                     <!-- Add spacer, to align navigation to the right -->
                     <div class="mdl-layout-spacer"></div>
                     <!-- Navigation. We hide it in small screens. -->
@@ -31,7 +31,7 @@ and open the template in the editor.
                 </div>
             </header>
             <div class="mdl-layout__drawer">
-                <span class="mdl-layout-title">NO</span>
+                <span class="mdl-layout-title">เมนู</span>
                 <nav class="mdl-navigation">
                     <a class="mdl-navigation__link" href="index.html">back</a>
                     <!--                                        <a class="mdl-navigation__link" href="">Link</a>
@@ -62,12 +62,14 @@ and open the template in the editor.
                     <table class="mdl-data-table mdl-js-data-table">
                         <thead>
                             <tr>
+                                <th class="mdl-data-table__cell--non-numeric">#</th>
                                 <th class="mdl-data-table__cell--non-numeric">คำเฉพาะ</th>
                                 <th class="mdl-data-table__cell--non-numeric">ลบ</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="w in fixWord track by $index">
+                                <td>{{$index}}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{w}}</td>
                                 <td>
                                     <!-- Icon button -->

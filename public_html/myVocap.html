@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="mycap">
+    <head>
+        <title>ศัพท์ของฉัน</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="MDL/material.min.css">
+        <script src="MDL/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="angular/angular.min.js"></script>
+        <script src="app-js/my-vocap-action.js"></script>
+    </head>
+    <body ng-controller="mycapControl">
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">แปล เองแม่งเลย</span>
+                    <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>
+                    <!-- Navigation. We hide it in small screens. -->
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <a class="mdl-navigation__link" href="index.html">Back</a>
+                        <!--                        <a class="mdl-navigation__link" href="">Link</a>
+                                                <a class="mdl-navigation__link" href="">Link</a>
+                                                <a class="mdl-navigation__link" href="">Link</a>-->
+                    </nav>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">เมนู</span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="index.html">Back</a>
+                    <!--                    <a class="mdl-navigation__link" href="">Link</a>
+                                        <a class="mdl-navigation__link" href="">Link</a>
+                                        <a class="mdl-navigation__link" href="">Link</a>-->
+                </nav>
+            </div>
+            <main class="mdl-layout__content">
+                <div class="page-content" style="padding: 20px;"><!-- Your content goes here -->
+
+                    <div style="float: left;margin-right: 20px;">
+                        <h4>คำที่โปรแรมแปลไม่ได้</h4>
+
+                        <table class="mdl-data-table mdl-js-data-table">
+                            <thead>
+                            <th>#</th>
+                            <th>คำศัพท์</th>
+                            <th>ความหมาย</th>
+                            <th>แปล</th>
+                            <th>บันทึก</th>
+                            <th>ลบ</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in errorVocap">
+                                    <td> {{$index}}</td>
+                                    <td>{{item.vocap}}</td>
+                                    <td>{{item.res}}</td>
+                                    <td><!-- Simple Textfield -->
+                                        <form action="#">
+                                            <div class="mdl-textfield mdl-js-textfield textfield-demo">
+                                                <input class="mdl-textfield__input" type="text" id="sample1" ng-model="txtAdd[$index]"/>
+                                                <label class="mdl-textfield__label" for="sample1">ใส่คำแปล</label>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <button class="mdl-button mdl-js-button mdl-button--icon" ng-click="addUserVocap($index)">
+                                            <i class="material-icons">save</i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="mdl-button mdl-js-button mdl-button--icon" ng-click="delError($index)">
+                                            <i class="material-icons">clear</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div style="float: left;">
+
+                        <h4>แปลไว้แล้ว</h4>
+                        <table class="mdl-data-table mdl-js-data-table">
+                            <thead>
+                            <th>#</th>
+                            <th>คำศัพท์</th>
+                            <th>ความหมาย</th>
+                            <th>ลบ</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in userVocap">
+                                    <td> {{$index}}</td>
+                                    <td>{{item.vocap}}</td>
+                                    <td>{{item.res}}</td>
+                                    <td>
+                                        <button class="mdl-button mdl-js-button mdl-button--icon" ng-click="delUserVocap($index)">
+                                            <i class="material-icons">clear</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+
+
+
+
+                </div>
+            </main>
+        </div>
+
+    </body>
+</html>
