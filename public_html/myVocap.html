@@ -11,7 +11,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="MDL/material.min.css">
         <script src="MDL/material.min.js"></script>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="css-icon-font/icon.css">
         <script src="angular/angular.min.js"></script>
         <script src="app-js/my-vocap-action.js"></script>
     </head>
@@ -33,7 +33,7 @@ and open the template in the editor.
             <div class="mdl-layout__drawer">
                 <span class="mdl-layout-title">เมนู</span>
                 <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link" href="index.html">Back</a>
+                    <a class="mdl-navigation__link" href="index.html">ย้อนกลับ</a>
                     <!--                    <a class="mdl-navigation__link" href="">Link</a>
                                         <a class="mdl-navigation__link" href="">Link</a>
                                         <a class="mdl-navigation__link" href="">Link</a>-->
@@ -57,7 +57,7 @@ and open the template in the editor.
                             <tbody>
                                 <tr ng-repeat="item in errorVocap">
                                     <td> {{$index}}</td>
-                                    <td>{{item.vocap}}</td>
+                                    <td  class="mdl-data-table__cell--non-numeric">{{item.vocap}}</td>
                                     <td>{{item.res}}</td>
                                     <td><!-- Simple Textfield -->
                                         <form action="#">

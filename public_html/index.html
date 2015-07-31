@@ -11,8 +11,9 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="MDL/material.min.css">
         <script src="MDL/material.min.js"></script>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="css-icon-font/icon.css">
         <script src="angular/angular.min.js"></script>
+        <script src="angular/angular-route.min.js"></script>
         <script src="app-js/index-action.js"></script>
     </head>
     <body ng-controller="indexControl">
@@ -28,10 +29,9 @@ and open the template in the editor.
                     <nav class="mdl-navigation mdl-layout--large-screen-only">
 
                         <div class="material-icons mdl-badge" data-badge="{{ajaxCount}}">settings_input_antenna</div>
-                        <a class="mdl-navigation__link" href="#" ng-click="loadDraff()">โหลด Draff</a>
-                        <a class="mdl-navigation__link" href="#" ng-click="draff()">บันทึก Draff</a>
+                        <a class="mdl-navigation__link" href="#" ng-click="draff()">บันทึก</a>
                         <a class="mdl-navigation__link" href="config.html">คำเฉพาะ</a>
-                        <a class="mdl-navigation__link" href="index.html">เริ่มใหม่</a>
+                        <a class="mdl-navigation__link" href="#" onclick="window.location = 'index.html'">เริ่มใหม่</a>
                     </nav>
                 </div>
             </header>
@@ -40,9 +40,10 @@ and open the template in the editor.
                 <nav class="mdl-navigation">
                     <!-- Number badge on icon -->
 
-                    <a class="mdl-navigation__link" href="index.html">เริ่มใหม่</a>
+                    <a class="mdl-navigation__link"  href="#" onclick="window.location = 'index.html'" >เริ่มใหม่</a>
                     <a class="mdl-navigation__link" href="config.html">คำเฉพาะ</a>
                     <a class="mdl-navigation__link" href="myVocap.html">คำศัพท์ตอนแปลไม่ออก</a>
+                    <a class="mdl-navigation__link" href="saveHistory.html">รายการที่บันทึก</a>
                 </nav>
             </div>
             <main class="mdl-layout__content">
@@ -66,12 +67,41 @@ and open the template in the editor.
                     </section>
 
 
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" style="margin-left: 20px;" ng-show="isHasDraff&&showInput" ng-click="loadDraff()">
-                        มี Draff ทิ้งไว้ จะเปิด คลิ๊กเลย
-                    </button>
+                    <div ng-show="showInput" style="padding: 10px;">
+                        <h4>รายการบันทึกล่าสุด</h4>
+
+                        <table class="mdl-data-table mdl-js-data-table">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric">#</th>
+                                    <th>ชื่อ</th>
+                                    <th>วันเวลา</th>
+                                    <th>เปิด</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in saveHistory track by $index">
+                                    <td class="mdl-data-table__cell--non-numeric">{{$index + 1}}</td>
+                                    <td>{{item.title}}</td>
+                                    <td>{{item.savedate}}</td>
+                                    <td>
+                                        <!-- Colored icon button -->
+                                        <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" 
+                                                ng-click="gotoLoad(item._id)"
+                                                style="margin-top: -5px;">
+                                            <i class="material-icons">open_in_new</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
 
 
                     <div align="center" ng-show="!showInput">
+                        <h3>{{currentDraff.title}}</h3>
+
                         <table style="border: 1px solid graytext">
                             <tbody>
                                 <tr  ng-repeat="arrayinLine in lines track by $index">

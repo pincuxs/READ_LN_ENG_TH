@@ -4,28 +4,28 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html ng-app="configapp">
+<html ng-app="saveHis">
     <head>
-        <title>Config</title>
+        <title>SAVE HISTORY</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="MDL/material.min.css">
         <script src="MDL/material.min.js"></script>
         <link rel="stylesheet" href="css-icon-font/icon.css">
         <script src="angular/angular.min.js"></script>
-        <script src="app-js/config-action.js"></script>
+        <script src="app-js/save-history-action.js"></script>
     </head>
-    <body ng-controller="configControl">
+    <body ng-controller="saveHisControl">
         <!-- Always shows a header, even in smaller screens. -->
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row">
                     <!-- Title -->
-                    <span class="mdl-layout-title">ตังค่า คำเฉพาะ</span>
+                    <span class="mdl-layout-title">รายการที่บันทึกไว้</span>
                     <!-- Add spacer, to align navigation to the right -->
                     <div class="mdl-layout-spacer"></div>
                     <!-- Navigation. We hide it in small screens. -->
-                    <nav class="mdl-navigation">
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
                         <a href="index.html" style="color: white;" ><i class="material-icons">clear</i> </a>
                     </nav>
                 </div>
@@ -40,47 +40,48 @@ and open the template in the editor.
                 <div class="page-content" style="padding: 20px;"><!-- Your content goes here -->
 
 
-                    <!-- Simple Textfield -->
-                    <form action="#">
-                        <div class="mdl-textfield mdl-js-textfield textfield-demo">
-                            <input class="mdl-textfield__input" type="text" id="sample1" ng-model="txtAdd" />
-                            <label class="mdl-textfield__label" for="sample1">คำเฉพาะ</label>
-                        </div>
-
-
-                        <!-- Colored raised button -->
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
-                                ng-click="add()">
-                            เพิ่ม
-                        </button>
-
-                    </form>
-
                     <table class="mdl-data-table mdl-js-data-table">
                         <thead>
                             <tr>
                                 <th class="mdl-data-table__cell--non-numeric">#</th>
-                                <th class="mdl-data-table__cell--non-numeric">คำเฉพาะ</th>
-                                <th class="mdl-data-table__cell--non-numeric">ลบ</th>
+                                <th>ชื่อ</th>
+                                <th>วันเวลา</th>
+                                <th>เปิด</th>
+                                <th>ลบ</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="w in fixWord track by $index">
-                                <td>{{$index}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{w}}</td>
+                            <tr ng-repeat="item in saveHistory track by $index">
+                                <td class="mdl-data-table__cell--non-numeric">{{$index + 1}}</td>
+                                <td>{{item.title}}</td>
+                                <td>{{item.savedate}}</td>
                                 <td>
-                                    <!-- Icon button -->
-                                    <button class="mdl-button mdl-js-button mdl-button--icon" ng-click="del($index)">
+                                    <!-- Colored icon button -->
+                                    <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" 
+                                            ng-click="gotoLoadHistory(item._id)"
+                                            style="margin-top: -5px;">
+                                        <i class="material-icons">open_in_new</i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="mdl-button mdl-js-button mdl-button--icon" ng-click="del($index)"
+                                            style="margin-top: -5px;">
                                         <i class="material-icons">clear</i>
                                     </button>
-
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
 
-                    <!--{{fixWord}}-->
+
+
+
+
+
+
+
+
 
                 </div>
             </main>
